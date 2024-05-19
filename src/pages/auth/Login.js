@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, IconButton, InputAdornment } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import "./Login.css";
 import { login } from "./authApiSlice";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../../components/CustomButton";
-import { setUserDetails } from "./authSlice";
+import { logout, setUserDetails } from "./authSlice";
 import { toast } from "react-toastify";
 
 const Login = () => {
@@ -18,6 +18,12 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  // login automatically when load login page
+  useEffect(() => {
+    logout();
+  }, []);
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData((prevData) => ({
@@ -26,6 +32,7 @@ const Login = () => {
     }));
   };
 
+  // show hide password when click on eye icon
   const handleClickShowPassword = () => {
     setUserData((prevData) => ({
       ...prevData,
@@ -37,6 +44,8 @@ const Login = () => {
     e.preventDefault();
   };
 
+
+  // disable submit button to prevent unnecessary api calls
   const disableButton = (status) => {
     setUserData((prevData) => ({
       ...prevData,
@@ -44,6 +53,7 @@ const Login = () => {
     }));
   }
 
+  // call login api and get token
   const handleLogin = async (e) => {
     try {
       e.preventDefault();
@@ -108,9 +118,9 @@ const Login = () => {
           }}
         />
 
-      <CustomButton type="submit" variant="contained" fullWidth disabled={userData.isDisabledButton}>
-        Login
-      </CustomButton>
+        <CustomButton type="submit" variant="contained" fullWidth disabled={userData.isDisabledButton}>
+          Login
+        </CustomButton>
       </form>
     </div>
   );

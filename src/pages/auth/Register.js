@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Alert, InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import "./Register.css";
 import { register } from "./authApiSlice";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../../components/CustomButton";
-import { setUserDetails } from "./authSlice";
+import { logout, setUserDetails } from "./authSlice";
 import { toast } from "react-toastify";
 
 const Register = () => {
@@ -23,6 +23,11 @@ const Register = () => {
 
   const navigate = useNavigate();
 
+  // login automatically when load register page
+  useEffect(() => {
+    logout();
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData((prevData) => ({
@@ -31,6 +36,7 @@ const Register = () => {
     }));
   };
 
+  // show and hide password text when click on eye icon
   const toggleShowPassword = () => {
     setUserData((prevData) => ({
       ...prevData,
@@ -45,6 +51,7 @@ const Register = () => {
     }));
   };
 
+  //  validate password 
   const validatePassword = () => {
     const { password, confirmPassword } = userData;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
@@ -72,6 +79,7 @@ const Register = () => {
     return isValid;
   };
 
+  // disable submit button to prevent unnecessary api calls
   const disableButton = (status) => {
     setUserData((prevData) => ({
       ...prevData,
@@ -79,7 +87,7 @@ const Register = () => {
     }));
   }
 
-
+  // call regiter api and create user
   const handleRegistration = async (e) => {
     try {
       e.preventDefault();
