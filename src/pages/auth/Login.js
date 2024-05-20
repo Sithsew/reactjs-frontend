@@ -58,7 +58,8 @@ const Login = () => {
     try {
       e.preventDefault();
       disableButton(true);
-      const result = await login(userData);
+      const user = { email: userData.email.toLowerCase(), password: userData.password }
+      const result = await login(user);
       if (result.statusCode === 200) {
         console.log("Login successful:", result);
         toast.success(result.message);
