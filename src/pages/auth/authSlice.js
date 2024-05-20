@@ -1,11 +1,10 @@
 
 
 export function isAuthenticated() {
-  return !!localStorage.getItem('token');
+  return !!(localStorage.getItem('token') && localStorage.getItem('token') !== undefined && localStorage.getItem('token') !== null)
 }
 
 export function getUserName() {
-  console.log(localStorage.getItem('username'),'============')
   return localStorage.getItem('username');
 }
 
